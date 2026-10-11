@@ -6,38 +6,47 @@
     <title>เว็บไซต์ลับ... ห้ามเข้าใกล้</title>
     <style>
         body {
-            background-color: #0d0d0d;
+            background-color: #000000;
             color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
             text-align: center;
-            padding-top: 20vh;
+            padding-top: 25vh;
             margin: 0;
             overflow: hidden;
         }
 
         h1 {
-            color: #ff3333;
-            text-shadow: 0 0 10px #ff0000;
+            color: #ff0000;
+            text-shadow: 0 0 15px #ff0000;
+            font-size: 28px;
+        }
+
+        p {
+            color: #cccccc;
+            font-size: 16px;
         }
 
         button {
-            background-color: #ff0000;
+            background-color: #990000;
             color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
+            border: 2px solid #ff0000;
+            padding: 15px 35px;
+            font-size: 20px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 15px #ff0000;
+            box-shadow: 0 0 20px #ff0000;
+            border-radius: 8px;
+            margin-top: 20px;
             transition: 0.2s;
         }
 
         button:hover {
-            background-color: #cc0000;
-            transform: scale(1.05);
+            background-color: #ff0000;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #ff0000;
         }
 
-        /* หน้าจอผีตุ้งแช่ */
+        /* หน้าจอผีตุ้งแช่ Jumpscare */
         #jumpscare-screen {
             position: fixed;
             top: 0;
@@ -55,17 +64,17 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            animation: shake 0.1s infinite;
+            animation: shake 0.08s infinite;
         }
 
-        /* เอฟเฟกต์สั่น */
+        /* เอฟเฟกต์สั่นกระชาก */
         @keyframes shake {
-            0% { transform: translate(5px, 5px) rotate(0deg); }
-            20% { transform: translate(-5px, -7px) rotate(-1deg); }
-            40% { transform: translate(-3px, 5px) rotate(1deg); }
-            60% { transform: translate(5px, 2px) rotate(0deg); }
-            80% { transform: translate(1px, -3px) rotate(1deg); }
-            100% { transform: translate(-1px, 5px) rotate(-1deg); }
+            0% { transform: translate(10px, 10px) scale(1.05) rotate(0deg); }
+            20% { transform: translate(-10px, -15px) scale(1.1) rotate(-2deg); }
+            40% { transform: translate(-15px, 10px) scale(1.05) rotate(2deg); }
+            60% { transform: translate(15px, 5px) scale(1.1) rotate(0deg); }
+            80% { transform: translate(5px, -10px) scale(1.05) rotate(1deg); }
+            100% { transform: translate(-5px, 10px) scale(1) rotate(-1deg); }
         }
     </style>
 </head>
@@ -74,13 +83,12 @@
     <div id="main-content">
         <h1>⚠️ คำเตือน: พื้นที่อันตราย ⚠️</h1>
         <p>คุณกล้าพอที่จะกดปุ่มนี้เพื่อดูความลับหรือไม่?</p>
-        <br>
         <button onclick="triggerJumpscare()">คลิกเพื่อเปิดความลับ</button>
     </div>
 
-    <!-- ส่วนแสดงหน้าผี (ใช้ลิงก์รูปภาพตรงสลับไว้เผื่อรูปไม่ขึ้น) -->
+    <!-- ส่วนรูปภาพผี (ฝัง SVG Graphic โดยตรง ไม่ต้องพึ่งพาเว็บอื่น) -->
     <div id="jumpscare-screen">
-        <img id="ghost-img" src="https://youtu.be/dQw4w9WgXcQ?si=hySr6S3pFsmu71R4" alt="Ghost">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' width='100%' height='100%'><rect width='500' height='500' fill='black'/><path d='M250,50 C130,50 80,150 80,280 C80,380 120,430 180,450 C210,430 250,440 290,450 C370,430 420,380 420,280 C420,150 370,50 250,50 Z' fill='%23e6e6e6'/><ellipse cx='175' cy='220' rx='45' ry='55' fill='black'/><ellipse cx='325' cy='220' rx='45' ry='55' fill='black'/><ellipse cx='175' cy='220' rx='15' ry='20' fill='red'/><ellipse cx='325' cy='220' rx='15' ry='20' fill='red'/><path d='M200,320 Q250,280 300,320 Q330,390 250,410 Q170,390 200,320 Z' fill='black'/><path d='M210,330 L220,350 L230,330 L240,350 L250,330 L260,350 L270,330 L280,350 L290,330' stroke='white' stroke-width='4' fill='none'/><path d='M100,100 L160,160 M400,100 L340,160' stroke='red' stroke-width='8'/></svg>" alt="Ghost Jumpscare">
     </div>
 
     <script>
@@ -89,27 +97,33 @@
             const screen = document.getElementById('jumpscare-screen');
             screen.style.display = 'flex';
 
-            // เล่นเสียง
+            // เล่นเสียงหวีดสยองขวัญความถี่สูง
             playScarySound();
         }
 
         function playScarySound() {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.8);
-            
-            gain.gain.setValueAtTime(1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.8);
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // คลื่นเสียงหลัก
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 1.2);
+                
+                gain.gain.setValueAtTime(1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 1.2);
+            } catch (e) {
+                console.log(e);
+            }
         }
     </script>
 
